@@ -135,6 +135,7 @@ int main()
                     array = (int*)realloc(array, (len_a+1) * sizeof(int));
                     make_array(len_a, array);
                 } else {
+                    free(str);
                     getchar();
                     str = get_str();
                     len_s = strlen(str);
