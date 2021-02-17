@@ -12,7 +12,7 @@ int main ()
     unsigned long m;
     int  n;
     scanf("%d", &n);
-    if (n < 1 || n > 20 ){
+    if (n < 0 || n > 20 ){
         printf("Error");
     }
     m  = factorial(n);
