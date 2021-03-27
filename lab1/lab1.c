@@ -3,6 +3,7 @@
 #include <string.h>
 #include <malloc.h>
 
+
 struct Matrix{
     struct Matrix_Int *m_i;
     struct Matrix_Float *m_f;
@@ -30,7 +31,6 @@ struct Matrix_Float{
     void (*addition)(struct Matrix *, int, int);
     void (*multiplication)(struct Matrix *, int, int);
     void (*lin_comb)(struct Matrix *, int, int);
-    
 };
 
 void make_arr(struct Matrix *m, int type, int size){
@@ -87,6 +87,8 @@ void mltp_sc(struct Matrix *m, int type, int size){
         }   
     }
 }
+
+
 
 void addition(struct Matrix *m, int type, int size){
     if (type == 0){
@@ -190,7 +192,58 @@ void lin_comb(struct Matrix *m, int type, int size){
             }
         }
     }
+}
 
+void case_2(struct Matrix *m, int type, int size ){
+    int n;
+    printf("\n1. Print\n2. Multyply by a scalar\n3. Addition\n4. Multiplication\n5. Linear combination\n");
+    scanf("%d", &n);
+    switch(n){
+        case 1:
+            if(type == 0){
+                m->m_i->print_arr = &print_arr;
+                m->m_i->print_arr(m, type, size);
+            } else {
+                m->m_f->print_arr = &print_arr;
+                m->m_f->print_arr(m, type, size);
+            }
+            break;
+        case 2:
+            if(type == 0){
+                m->m_i->mltp_sc = &mltp_sc;
+                m->m_i->mltp_sc(m, type, size);
+            } else {
+                m->m_f->mltp_sc = &mltp_sc;
+                m->m_f->mltp_sc(m, type, size);
+            }
+            break;
+        case 3:
+            if(type == 0){
+                m->m_i->addition = &addition;
+                m->m_i->addition(m, type, size);
+            } else {
+                m->m_f->addition = &addition;
+                m->m_f->addition(m, type, size);
+            }
+            break;
+        case 4:
+            if(type == 0){
+                m->m_i->multiplication = &multiplication;
+                m->m_i->multiplication(m, type, size);
+            } else {
+                m->m_f->multiplication = &multiplication;
+                m->m_f->multiplication(m, type, size);
+            }
+            break;
+        case 5:
+            if(type == 0){
+                m->m_i->lin_comb = &lin_comb;
+                m->m_i->lin_comb(m, type, size);
+            } else {
+                m->m_f->lin_comb = &lin_comb;
+                m->m_f->lin_comb(m, type, size);
+            }      
+        }
 }
 
 int main() {
@@ -220,6 +273,10 @@ int main() {
                 scanf("%d", &type);
                 printf("Enter size of matrix: ");
                 scanf("%d", &size);
+                if( size < 1 ){
+                    printf("Incorrect data entry!\n");
+                    break;
+                }
                 if (type == 0){
                     m->m_i = (struct Matrix_Int*)calloc(1, sizeof(struct Matrix_Int));
                     m->m_i->make_arr = &make_arr;
@@ -233,55 +290,7 @@ int main() {
                 }
                 break;
             case 2:
-                printf("\n1. Print\n2. Multyply by a scalar\n3. Addition\n4. Multiplication\n5. Linear combination\n");
-                scanf("%d", &n1);
-                switch(n1){
-                    case 1:
-                        if(type == 0){
-                            m->m_i->print_arr = &print_arr;
-                            m->m_i->print_arr(m, type, size);
-                        } else {
-                            m->m_f->print_arr = &print_arr;
-                            m->m_f->print_arr(m, type, size);
-                        }
-                        break;
-                    case 2:
-                        if(type == 0){
-                            m->m_i->mltp_sc = &mltp_sc;
-                            m->m_i->mltp_sc(m, type, size);
-                        } else {
-                            m->m_f->mltp_sc = &mltp_sc;
-                            m->m_f->mltp_sc(m, type, size);
-                        }
-                        break;
-                    case 3:
-                        if(type == 0){
-                            m->m_i->addition = &addition;
-                            m->m_i->addition(m, type, size);
-                        } else {
-                            m->m_f->addition = &addition;
-                            m->m_f->addition(m, type, size);
-                        }
-                        break;
-                    case 4:
-                        if(type == 0){
-                            m->m_i->multiplication = &multiplication;
-                            m->m_i->multiplication(m, type, size);
-                        } else {
-                            m->m_f->multiplication = &multiplication;
-                            m->m_f->multiplication(m, type, size);
-                        }
-                        break;
-                    case 5:
-                        if(type == 0){
-                            m->m_i->lin_comb = &lin_comb;
-                            m->m_i->lin_comb(m, type, size);
-                        } else {
-                            m->m_f->lin_comb = &lin_comb;
-                            m->m_f->lin_comb(m, type, size);
-                        }      
-                }
-
+                case_2(m, type, size);
                 break;
             case 3:
                 exit = 1;
